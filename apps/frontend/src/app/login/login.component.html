@@ -1,0 +1,30 @@
+<main>
+	<div class="for-white-center-bg">
+		/
+	</div>
+    <h2>Вход</h2>
+	<div class="content">
+		<form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzRequired>Логин</nz-form-label>
+                <nz-form-control [nzSm]="7" nzErrorTip="Пожалуйста, введите Логин!">
+                    <input nz-input type="text" formControlName="login">
+                </nz-form-control>
+            </nz-form-item >
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" nzFor="password" nzRequired>Пароль</nz-form-label>
+                <nz-form-control [nzSm]="7" nzErrorTip="Пожалуйста, введите Пароль!">
+                    <input nz-input type="password" formControlName="password">
+                </nz-form-control>
+            </nz-form-item >
+
+            <nz-form-item nz-row class="register-area">
+                <nz-form-control [nzSpan]="14" [nzOffset]="8">
+                    <button nz-button nzType="primary" [disabled]="isDisabled">Войти</button>
+                    <span *ngIf="error" class="warning">{{error}}</span>
+                </nz-form-control>
+            </nz-form-item>
+		</form>
+	</div>
+</main>

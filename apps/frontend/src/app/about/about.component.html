@@ -1,0 +1,38 @@
+<main>
+	<div class="for-white-center-bg">
+		/
+	</div>
+	<h2>О разработчике</h2>
+	<div class="content">
+		<div class="AuthorInfo">
+			<img src="/assets/images/U6UAld1cAB2H9Z9AhDv1Ewqi7Bj3g2YdyGfYJX1W498obSbft0Xx6aAzRq7MW213nHPNoh3whxQodXZlN8-WhxBh.jpg" alt="">
+			<div class="AuthorInfoRightSide">
+				<nz-space nzDirection="vertical">
+					<nz-card *nzSpaceItem>
+						<p>{{aboutInfo.shortInfo || 'Меня зовут Илья, 21 y.o., родился в Славгороде, собственно, сайт этому городу и посвящен.'}}</p>
+					</nz-card>
+					<nz-card *nzSpaceItem>
+						<p>{{aboutInfo.currentPlaceOfStudy || 'Учусь в СибГУТИ, на факультете АЭС по специальности информационная безопасность телекоммуникационных систем.'}}</p>
+					</nz-card>
+					<nz-card *nzSpaceItem>
+						<p>{{aboutInfo.pastPlaceOfStudy || 'Окончил ВСШ №35.'}}</p>
+					</nz-card>
+					<nz-card *nzSpaceItem>
+						<p>{{aboutInfo.currentPlaceOfWork || 'Сейчас стажируюсь в AT Consulting Восток'}}</p>
+					</nz-card>
+				</nz-space>
+			</div>
+			<div>
+				<nz-space nzDirection="vertical">
+					<nz-card *nzSpaceItem>
+						<p>{{aboutInfo.mainActivity || 'написание программ и автоматизация различного рода рутинных задач.'}}</p>
+					</nz-card>
+					<nz-card *nzSpaceItem>
+						<p>{{aboutInfo.favoriteThings || 'мне нравится собирать компы. а еще мне нравится пицца, люблю пить энергетики, офк пью их редко. люблю когда бабки появляются из воздуха с помощью моих алгоритмов.'}}</p>
+					</nz-card>
+				</nz-space>
+			</div>
+		</div>
+		<a nz-button nzType="primary" routerLink="/aboutMe/edit">Edit</a>
+	</div>
+</main>

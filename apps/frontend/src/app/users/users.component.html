@@ -1,0 +1,82 @@
+<main>
+	<div class="for-white-center-bg">
+		/
+	</div>
+	<h2>Список пользователей</h2>
+	<div class="content">
+        <a nz-button nzType="primary" class="add-btn" [routerLink]="['/users/edit', '']">Add</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <p class="table-field">id</p>
+                    </th>
+                    <th>
+                        <p class="table-field">логин</p>
+                    </th>
+                    <th>
+                        <p class="table-field">Имя</p>
+                    </th>
+                    <th>
+                        <p class="table-field">Фамилия</p>
+                    </th>
+                    <th>
+                        <p class="table-field">Отчество</p>
+                    </th>
+                    <th>
+                        <p class="table-field">Роль</p>
+                    </th>
+                    <th>
+                        <p class="table-field">Статус</p>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>
+                        <p class="table-field">{{user.id}}</p>
+                    </td>
+                    <td>
+                        <p class="table-field">{{user.login}}</p>
+                    </td>
+                    <td>
+                        <p class="table-field">{{user.firstName}}</p>
+                    </td>
+                    <td>
+                        <p class="table-field">{{user.lastName}}</p>
+                    </td>
+                    <td>
+                        <p class="table-field">{{user.patronymic}}</p>
+                    </td>
+                    <td>
+                        <p class="table-field">{{user.role}}</p>
+                    </td>
+                    <td *ngIf="user.isActive">
+                        <p class="table-field">активен</p>
+                    </td>
+                    <td *ngIf="!user.isActive">
+                        <p class="table-field">не активен</p>
+                    </td>
+                    <td>
+                        <a nz-button nzType="link" [routerLink]="['/users/edit', user.id]">edit</a> |
+                        <a nz-button nzType="link" (click)="showModal(user.id, user.firstName, user.lastName)" nzDanger>delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="!users || users?.length == 0">
+            <h4 class="no-data">нет данных</h4>
+        </div>
+        <!-- <ul class="heroes">
+            <li *ngFor="let user of users">
+                <p class="name">{{user.id}}</p>
+                <p class="name">{{user.firstName}}</p>
+                <p class="name">{{user.lastName}}</p>
+                <p class="name">{{user.patronymic}}</p>
+                <p class="name">{{user.role}}</p>
+                <p class="name">{{user.isActive}}</p>
+            </li>
+        </ul> -->
+	</div>
+</main>

@@ -1,0 +1,31 @@
+<main>
+	<div class="for-white-center-bg">
+		/
+	</div>
+	<h2>О разработчике</h2>
+	<div class="content">
+		<form nz-form>
+			<!-- <img src="/assets/images/U6UAld1cAB2H9Z9AhDv1Ewqi7Bj3g2YdyGfYJX1W498obSbft0Xx6aAzRq7MW213nHPNoh3whxQodXZlN8-WhxBh.jpg" alt=""> -->
+			<label>кратко о себе:</label>
+			<input nz-input type="text" [(ngModel)]="aboutInfo.shortInfo" [ngModelOptions]="{ standalone: true }">
+
+			<label>текущее место учебы:</label>
+			<input nz-input type="text" [(ngModel)]="aboutInfo.currentPlaceOfStudy" [ngModelOptions]="{ standalone: true }">
+
+			<label>прошлое место учебы:</label>
+			<input nz-input type="text" [(ngModel)]="aboutInfo.pastPlaceOfStudy" [ngModelOptions]="{ standalone: true }">
+
+			<label>текущее место работы:</label>
+			<input nz-input type="text" [(ngModel)]="aboutInfo.currentPlaceOfWork" [ngModelOptions]="{ standalone: true }">
+
+			<label>Основной род деятельности:</label>
+			<input nz-input type="text" [(ngModel)]="aboutInfo.mainActivity" [ngModelOptions]="{ standalone: true }">
+
+			<label>что мне нравится:</label>
+			<input nz-input type="text" [(ngModel)]="aboutInfo.favoriteThings" [ngModelOptions]="{ standalone: true }">
+
+			<br>
+			<button nz-button nzType="primary" (click)="saveChanges()">Save changes</button>
+		</form>
+	</div>
+</main>

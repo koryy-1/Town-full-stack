@@ -1,1 +1,144 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+	background-color: #c8c8c8;
+	margin: 0;
+	font-family: sans-serif;
+	overflow-x: hidden;
+}
+
+header {
+	background-color: white;
+	/* background: url(images/IMG_4367.jpg) no-repeat center bottom; */
+}
+
+header nav{
+	padding: 20px;
+	font-size: 20px;
+}
+
+header a{
+	margin-right: 30px;
+	
+	text-decoration: none; 
+	color: rgb(37, 37, 37);
+}
+
+header span{
+	margin-right: 50px;
+	margin-left: 100px;
+	color: rgb(37, 37, 37);
+}
+
+/* input{
+	min-width: 800px;
+} */
+
+.scale-pict{
+	min-width: 100vmax;
+	max-height: 600px;
+	object-fit: cover;
+    overflow: hidden;
+}
+
+.scale-pict img{
+	transition: 0.5s;
+}
+
+.scale-pict img:hover{
+	transform: scale(1.1);
+}
+
+section{
+	background-color: blueviolet;
+	top: 0;
+	bottom: 0;
+	left: 0;
+}
+
+main {
+	margin: 0 auto;
+	max-width: 900px;
+	height: auto;
+	white-space: normal;
+	background-color: white;
+}
+
+.content{
+	margin: 0 20px;
+	padding-bottom: 20px;
+}
+
+.content img{
+	max-width: 600px;
+	border-radius: 10px;
+}
+
+[nz-button] {
+	margin-top: 10px;
+}
+
+.AuthorInfo img {
+	width: 300px;
+	float: left;
+	margin: 10px 0;
+	margin-right: 10px;
+	border-radius: 10px;
+	border: solid;
+	border-width: 1px;
+}
+
+.AuthorInfoRightSide nz-card {
+	float: left;
+	width: 550px;
+}
+
+nz-card {
+	width: 860px;
+}
+
+.AuthorInfo {
+	float: left;
+}
+
+h1, h2{
+	padding-top: 30px;
+	margin-top: 0px;
+	text-align: center;
+}
+
+.for-white-center-bg{
+	top: 0;
+	position: absolute;
+	z-index: -1;
+	margin: auto;
+	min-width: 900px;
+	/* min-height: 100vh; */
+	bottom: 0px;
+	background-color: white;
+}
+
+.no-data{
+	text-align: center;
+}
+
+.warning{
+	margin-left: 10px;
+	color: red;
+}
+
+.table-field{
+	text-align: center;
+	margin: 0;
+}
+
+td .table-field{
+	margin: 15px 0 0;
+}
+
+.autorize-btn{
+	float: right;
+	margin-right: 70px;
+}
+
+/* .register-btn{
+	float: right;
+} */
