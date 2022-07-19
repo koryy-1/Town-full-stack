@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AboutInfo } from '../models/about-model';
 
 @Component({
@@ -9,6 +9,7 @@ import { AboutInfo } from '../models/about-model';
 export class AboutComponent {
   // title = 'about';
 
-  aboutInfo: AboutInfo = JSON.parse(localStorage.getItem('aboutInfo') as string)
+  aboutInfo: AboutInfo | null = JSON.parse(localStorage.getItem('aboutInfo') as string)
+
 
 }

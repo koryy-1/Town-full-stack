@@ -31,7 +31,7 @@ export class AboutEditComponent implements OnInit {
   ngOnInit(): void {
     this.aboutInfoFromLS = JSON.parse(localStorage.getItem('aboutInfo') as string)
 
-    this.aboutInfoFromLS.shortInfo = this.aboutInfoFromLS.shortInfo || 'Меня зовут Илья, 21 y.o., родился в Славгороде, собственно, сайт этому городу и посвящен.',
+    this.aboutInfoFromLS.shortInfo = this.aboutInfoFromLS?.shortInfo || 'Меня зовут Илья, 21 y.o., родился в Славгороде, собственно, сайт этому городу и посвящен.',
 
     this.aboutInfoFromLS.currentPlaceOfStudy = this.aboutInfoFromLS.currentPlaceOfStudy || 'Учусь в СибГУТИ, на факультете АЭС по специальности информационная безопасность телекоммуникационных систем.',
 

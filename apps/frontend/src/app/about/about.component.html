@@ -9,26 +9,26 @@
 			<div class="AuthorInfoRightSide">
 				<nz-space nzDirection="vertical">
 					<nz-card *nzSpaceItem>
-						<p>{{aboutInfo.shortInfo || 'Меня зовут Илья, 21 y.o., родился в Славгороде, собственно, сайт этому городу и посвящен.'}}</p>
+						<p>{{aboutInfo?.shortInfo || 'Меня зовут Илья, 21 y.o., родился в Славгороде, собственно, сайт этому городу и посвящен.'}}</p>
 					</nz-card>
 					<nz-card *nzSpaceItem>
-						<p>{{aboutInfo.currentPlaceOfStudy || 'Учусь в СибГУТИ, на факультете АЭС по специальности информационная безопасность телекоммуникационных систем.'}}</p>
+						<p>{{aboutInfo?.currentPlaceOfStudy || 'Учусь в СибГУТИ, на факультете АЭС по специальности информационная безопасность телекоммуникационных систем.'}}</p>
 					</nz-card>
 					<nz-card *nzSpaceItem>
-						<p>{{aboutInfo.pastPlaceOfStudy || 'Окончил ВСШ №35.'}}</p>
+						<p>{{aboutInfo?.pastPlaceOfStudy || 'Окончил ВСШ №35.'}}</p>
 					</nz-card>
 					<nz-card *nzSpaceItem>
-						<p>{{aboutInfo.currentPlaceOfWork || 'Сейчас стажируюсь в AT Consulting Восток'}}</p>
+						<p>{{aboutInfo?.currentPlaceOfWork || 'Сейчас стажируюсь в AT Consulting Восток'}}</p>
 					</nz-card>
 				</nz-space>
 			</div>
 			<div>
 				<nz-space nzDirection="vertical">
 					<nz-card *nzSpaceItem>
-						<p>{{aboutInfo.mainActivity || 'написание программ и автоматизация различного рода рутинных задач.'}}</p>
+						<p>{{aboutInfo?.mainActivity || 'написание программ и автоматизация различного рода рутинных задач.'}}</p>
 					</nz-card>
 					<nz-card *nzSpaceItem>
-						<p>{{aboutInfo.favoriteThings || 'мне нравится собирать компы. а еще мне нравится пицца, люблю пить энергетики, офк пью их редко. люблю когда бабки появляются из воздуха с помощью моих алгоритмов.'}}</p>
+						<p>{{aboutInfo?.favoriteThings || 'мне нравится собирать компы. а еще мне нравится пицца, люблю пить энергетики, офк пью их редко. люблю когда бабки появляются из воздуха с помощью моих алгоритмов.'}}</p>
 					</nz-card>
 				</nz-space>
 			</div>
