@@ -4,6 +4,7 @@
 	</div>
 	<h2>Список пользователей</h2>
 	<div class="content">
+        <span *ngIf="error" class="warning">{{error}}</span>
         <a nz-button nzType="primary" class="add-btn" [routerLink]="['/users/edit', '']">Add</a>
         <table class="table">
             <thead>
@@ -60,12 +61,12 @@
                     </td>
                     <td>
                         <a nz-button nzType="link" [routerLink]="['/users/edit', user.id]">edit</a> |
-                        <a nz-button nzType="link" (click)="showModal(user.id, user.firstName, user.lastName)" nzDanger>delete</a>
+                        <a nz-button nzType="link" (click)="showModal(user.id, user.firstName, user.lastName)" [disabled]="disableDeleteBtn" nzDanger>delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div *ngIf="!users || users?.length == 0">
+        <div *ngIf="!users || users?.length === 0">
             <h4 class="no-data">нет данных</h4>
         </div>
         <!-- <ul class="heroes">

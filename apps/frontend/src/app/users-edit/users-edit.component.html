@@ -85,6 +85,7 @@
                 <nz-form-control [nzSpan]="14" [nzOffset]="6">
                     <button *ngIf="!userIsExist" nz-button nzType="primary" (click)="addUser()">Создать пользователя</button>
                     <button *ngIf="userIsExist" nz-button nzType="primary" (click)="changeUser()">Сохранить изменения</button>
+                    <span *ngIf="error" class="warning">{{error}}</span>
                     <!-- <span class="warning">{{warningMessage}}</span> -->
                 </nz-form-control>
             </nz-form-item>

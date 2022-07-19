@@ -7,6 +7,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { User } from '../models/user-model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
+import { UserService } from '../services/user.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users-edit',
@@ -25,13 +27,9 @@ export class UsersEditComponent implements OnInit {
     isActive: false,
   }
   users: User[] = []
-
   roles = ['admin', 'operator', 'user']
-
-  // warningMessage = ''
-
-  id = ''
-
+  error = ''
+  paramId = ''
   userIsExist = false
 
   validateForm!: FormGroup
@@ -45,12 +43,13 @@ export class UsersEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')!
-    if (this.id && this.id !== '' && this.checkUserExist(+this.id)) {
+    this.paramId = this.route.snapshot.paramMap.get('id')!
+    if (this.paramId && this.paramId !== '' && this.checkUserExist(+this.paramId)) {
       this.userIsExist = true
     }
 
@@ -66,6 +65,11 @@ export class UsersEditComponent implements OnInit {
   }
 
   checkUserExist(id: number): boolean {
+
+
+    /// this.userService.getUser(user)
+
+
     this.users = JSON.parse(localStorage.getItem('Users') as string)
 
     let _user = this.users.find(user => user.id === id)
@@ -91,10 +95,10 @@ export class UsersEditComponent implements OnInit {
     return {};
   };
 
-  checkData(): boolean {
+  invalidData(): boolean {
     if (this.validateForm.valid) {
       // console.log('submit', this.validateForm.value);
-      return true
+      return false
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -102,33 +106,95 @@ export class UsersEditComponent implements OnInit {
           control.updateValueAndValidity({ onlySelf: true })
         }
       })
-      return false
+      return true
     }
   }
 
-  addUser() {
-    if (this.checkData()) {
-      if (this.users.length === 0) {
-        this.users = JSON.parse(localStorage.getItem('Users') as string)
-      }
-      if (this.users?.length != 0 && this.users[this.users.length - 1].hasOwnProperty('id'))
-        this.user.id = this.users[this.users.length - 1].id + 1
-      else
-        this.user.id = 0
+  get f() { return this.validateForm.controls; }
 
-      this.users.push(this.user)
-      localStorage.setItem('Users', JSON.stringify(this.users))
-      this.router.navigate(['/users'])
+  addUser() {
+    if (this.invalidData()) {
+      return
     }
+
+    //TODO fix
+    const user: User = {
+      id: 0,
+      login: this.f['login'].value,
+      password: this.f['password'].value,
+      firstName: this.f['firstName'].value,
+      lastName: this.f['lastName'].value,
+      patronymic: this.f['patronymic'].value,
+      role: this.user.role,
+      isActive: this.user.isActive
+    }
+
+    // this.loading = true;
+    // this.isDisabled = true
+    this.userService.createUser(user)
+      .pipe(first())
+      .subscribe({
+        next: data => {
+          this.router.navigate(['/users']);
+        },
+        error: error => {
+          this.error = error;
+          // this.isDisabled = false
+          // this.loading = false;
+        }
+      });
+
+    // if (this.users.length === 0) {
+    //   this.users = JSON.parse(localStorage.getItem('Users') as string)
+    // }
+    // if (this.users?.length != 0 && this.users[this.users.length - 1].hasOwnProperty('id'))
+    //   this.user.id = this.users[this.users.length - 1].id + 1
+    // else
+    //   this.user.id = 0
+
+    // this.users.push(this.user)
+    // localStorage.setItem('Users', JSON.stringify(this.users))
+    // this.router.navigate(['/users'])
   }
 
   changeUser() {
-    if (this.checkData()) {
-      this.users.map(n => n.id === +this.id ? { ...this.user } : n) // modified
-
-      localStorage.setItem('Users', JSON.stringify(this.users))
-      this.router.navigate(['/users'])
+    if (this.invalidData()) {
+      return
     }
+
+    const user: User = {
+      id: 0,
+      login: this.f['login'].value,
+      password: this.f['password'].value,
+      firstName: this.f['firstName'].value,
+      lastName: this.f['lastName'].value,
+      patronymic: this.f['patronymic'].value,
+      role: this.f['role'].value,
+      isActive: this.f['isActive'].value
+    }
+
+    // this.loading = true;
+    // this.isDisabled = true
+    this.userService.updateUser(this.paramId, user)
+      .pipe(first())
+      .subscribe({
+        next: data => {
+          this.router.navigate(['/users']);
+        },
+        error: error => {
+          this.error = error;
+          // this.isDisabled = false
+          // this.loading = false;
+        }
+      });
+
+
+    // if (this.invalidData()) {
+    //   this.users.map(n => n.id === +this.id ? { ...this.user } : n) // modified
+
+    //   localStorage.setItem('Users', JSON.stringify(this.users))
+    //   this.router.navigate(['/users'])
+    // }
   }
 
 }
