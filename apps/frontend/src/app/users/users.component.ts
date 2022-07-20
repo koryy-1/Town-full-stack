@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterStateSnapshot } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { User } from '../models/user-model';
 import { AuthenticationService } from '../services/authentication.service';
 import { UserService } from '../services/user.service';
@@ -13,9 +13,15 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
+  confirmModal?: NzModalRef;
+  isVisible = false;
+  isOkLoading = false;
+  
   users: User[] = []
+  errorDelete = ''
+  errorData = ''
   disableDeleteBtn = false
-  error = ''
+  loading = true
 
   constructor(
     private modal: NzModalService,
@@ -32,7 +38,16 @@ export class UsersComponent implements OnInit {
 
   getUsers(): void {
     this.userService.getUsers()
-    .subscribe(users => this.users = users);
+    .subscribe({
+      next: users => {
+        this.users = users
+        this.loading = false
+      },
+      error: error => {
+        this.errorData = error.error.message;
+        this.loading = false
+      }
+    });
   }
 
   isLoggedIn() {
@@ -47,10 +62,11 @@ export class UsersComponent implements OnInit {
     return false;
   }
 
-  deleteUser(id: number) {
+  handleDelete(id: number) {
     if (!this.isLoggedIn()) {
       return
     }
+    this.isOkLoading = true;
     this.disableDeleteBtn = true
     this.userService.deleteUser(id)
       .pipe(first())
@@ -61,28 +77,35 @@ export class UsersComponent implements OnInit {
             this.users.splice(index, 1);
           }
           this.disableDeleteBtn = false
+          this.isVisible = false;
+          this.isOkLoading = false;
         },
         error: error => {
-          this.error = error;
+          this.errorDelete = error.error.message;
           this.disableDeleteBtn = false
-          // this.loading = false;
+          this.isOkLoading = false;
         }
       });
     
-
-    // localStorage.setItem('Users', JSON.stringify(this.users))
   }
 
-  showModal(id: number, firstName: string | null, lastName: string | null) {
+  handleCancel(): void {
+    this.isVisible = false;
+    this.errorDelete = ' '
+  }
+
+
+  showModal() {
     if (!this.isLoggedIn()) {
       return
     }
-    this.modal.confirm({
-      nzTitle: `Вы уверены, что хотите удалить пользователя ${firstName} ${lastName}?`,
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteUser(id),
-    });
+    this.isVisible = true;
+    // this.confirmModal = this.modal.confirm({
+    //   nzTitle: `Вы уверены, что хотите удалить пользователя ${firstName} ${lastName}?`,
+    //   nzOkType: 'primary',
+    //   nzOkDanger: true,
+    //   nzOnOk: () => this.deleteUser(id),
+    // });
 
   }
 

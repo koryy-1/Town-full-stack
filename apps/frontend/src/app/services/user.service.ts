@@ -14,17 +14,21 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.usersUrl)
-      .pipe(
-        tap(),
-        catchError(() => [])
-      );
+      .pipe(map(users => {
+        return users;
+      }));
+  }
+
+  findUser(id: number) {
+    return this.http.get<any>(`${this.usersUrl}/edit/${id}`)
+      .pipe(map(user => {
+        return user;
+      }));
   }
 
   createUser(user: User) {
     return this.http.post<any>(`${this.usersUrl}/edit`, user)
     .pipe(map(user => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem('currentUser', JSON.stringify(user));
       return user;
     }));
   }
@@ -32,8 +36,6 @@ export class UserService {
   updateUser(id: string, user: User) {
     return this.http.put<any>(`${this.usersUrl}/edit/${id}`, user)
     .pipe(map(user => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem('currentUser', JSON.stringify(user));
       return user;
     }));
   }

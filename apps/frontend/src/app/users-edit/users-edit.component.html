@@ -2,21 +2,22 @@
 	<div class="for-white-center-bg">
 		/
 	</div>
-	<h2 *ngIf="!userIsExist">Добавление нового пользователя</h2>
-    <h2 *ngIf="userIsExist">Изменение пользователя</h2>
+    <h2 *ngIf="loading">Загрузка</h2>
+	<h2 *ngIf="!userIsExist && !loading">Добавление нового пользователя</h2>
+    <h2 *ngIf="userIsExist && !loading">Изменение пользователя</h2>
 	<div class="content">
 		<form nz-form [formGroup]="validateForm">
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzRequired>Логин</nz-form-label>
                 <nz-form-control [nzSm]="7" nzErrorTip="Пожалуйста, введите Логин!">
-                    <input nz-input type="text" [(ngModel)]="user.login" formControlName="login">
+                    <input nz-input type="text" formControlName="login">
                 </nz-form-control>
             </nz-form-item >
 
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzFor="password" nzRequired>Пароль</nz-form-label>
                 <nz-form-control [nzSm]="7" nzErrorTip="Пожалуйста, введите Пароль!">
-                    <input nz-input type="password" [(ngModel)]="user.password" formControlName="password" 
+                    <input nz-input type="password" formControlName="password" 
                     (ngModelChange)="updateConfirmValidator()">
                 </nz-form-control>
             </nz-form-item >
@@ -37,7 +38,7 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzRequired>Имя</nz-form-label>
                 <nz-form-control [nzSm]="7" nzErrorTip="Пожалуйста, введите имя!">
-                    <input nz-input type="text" [(ngModel)]="user.firstName" formControlName="firstName">
+                    <input nz-input type="text" formControlName="firstName">
                 </nz-form-control>
             </nz-form-item >
 			<!-- <label>Имя:</label>
@@ -46,7 +47,7 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzRequired>Фамилия</nz-form-label>
                 <nz-form-control [nzSm]="7" nzErrorTip="Пожалуйста, введите фамилию!">
-                    <input nz-input type="text" [(ngModel)]="user.lastName" formControlName="lastName">
+                    <input nz-input type="text" formControlName="lastName">
                 </nz-form-control>
             </nz-form-item >
 			<!-- <label>Фамилия:</label>
@@ -55,7 +56,7 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6" nzRequired>Отчество</nz-form-label>
                 <nz-form-control [nzSm]="7" nzErrorTip="Пожалуйста, введите отчество!">
-                    <input nz-input type="text" [(ngModel)]="user.patronymic" formControlName="patronymic">
+                    <input nz-input type="text" formControlName="patronymic">
                 </nz-form-control>
             </nz-form-item >
 			<!-- <label>Отчество:</label>
@@ -64,7 +65,7 @@
             <nz-form-item>
                 <nz-form-label [nzSpan]="6">Роль</nz-form-label>
                 <nz-form-control [nzSm]="7">
-                    <nz-select [(ngModel)]="user.role" [ngModelOptions]="{ standalone: true }">
+                    <nz-select formControlName="role">
                         <nz-option *ngFor="let role of roles" [nzValue]="role" [nzLabel]="role"></nz-option>
                     </nz-select>
                 </nz-form-control>
@@ -77,14 +78,19 @@
 
             <nz-form-item nz-row class="register-area">
                 <nz-form-control [nzSpan]="14" [nzOffset]="6">
-                    <label nz-checkbox [(ngModel)]="user.isActive" [ngModelOptions]="{ standalone: true }">Статус</label>
+                    <label nz-checkbox formControlName="isActive">Статус</label>
                 </nz-form-control>
             </nz-form-item >
 
             <nz-form-item nz-row class="register-area">
                 <nz-form-control [nzSpan]="14" [nzOffset]="6">
-                    <button *ngIf="!userIsExist" nz-button nzType="primary" (click)="addUser()">Создать пользователя</button>
-                    <button *ngIf="userIsExist" nz-button nzType="primary" (click)="changeUser()">Сохранить изменения</button>
+                    <button *ngIf="!userIsExist" 
+                    nz-button nzType="primary" 
+                    (click)="addUser()" [disabled]="isDisabled || loading">Создать пользователя</button>
+                    
+                    <button *ngIf="userIsExist" 
+                    nz-button nzType="primary" 
+                    (click)="changeUser()" [disabled]="isDisabled || loading">Сохранить изменения</button>
                     <span *ngIf="error" class="warning">{{error}}</span>
                     <!-- <span class="warning">{{warningMessage}}</span> -->
                 </nz-form-control>

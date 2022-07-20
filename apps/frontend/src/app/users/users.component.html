@@ -4,7 +4,7 @@
 	</div>
 	<h2>Список пользователей</h2>
 	<div class="content">
-        <span *ngIf="error" class="warning">{{error}}</span>
+        
         <a nz-button nzType="primary" class="add-btn" [routerLink]="['/users/edit', '']">Add</a>
         <table class="table">
             <thead>
@@ -61,14 +61,33 @@
                     </td>
                     <td>
                         <a nz-button nzType="link" [routerLink]="['/users/edit', user.id]">edit</a> |
-                        <a nz-button nzType="link" (click)="showModal(user.id, user.firstName, user.lastName)" [disabled]="disableDeleteBtn" nzDanger>delete</a>
+                        <a 
+                        nz-button nzType="link" 
+                        (click)="showModal()" 
+                        [disabled]="disableDeleteBtn" 
+                        nzDanger
+                        >
+                        delete</a>
+                        <nz-modal
+                        [(nzVisible)]="isVisible"
+                        nzTitle="Подтверждение удаления"
+                        (nzOnCancel)="handleCancel()"
+                        (nzOnOk)="handleDelete(user.id)"
+                        nzOkDanger="true"
+                        [nzOkLoading]="isOkLoading"
+                        >
+                        <div *nzModalContent>
+                            <p>Вы уверены, что хотите удалить пользователя {{user.firstName}} {{user.lastName}}?</p>
+                            <span *ngIf="errorDelete" class="warning">{{errorDelete}}</span>
+                        </div>
+                        </nz-modal>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div *ngIf="!users || users?.length === 0">
-            <h4 class="no-data">нет данных</h4>
-        </div>
+        <h4 *ngIf="loading" class="no-data">Загрузка</h4>
+        <h4 *ngIf="(!users || users?.length === 0) && !loading && !errorData" class="no-data">нет данных</h4>
+        <h4 *ngIf="errorData" class="no-data warning">{{errorData}}</h4>
         <!-- <ul class="heroes">
             <li *ngFor="let user of users">
                 <p class="name">{{user.id}}</p>

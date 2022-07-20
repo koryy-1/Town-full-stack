@@ -26,11 +26,12 @@ export class UsersEditComponent implements OnInit {
     role: 'user',
     isActive: false,
   }
-  users: User[] = []
-  roles = ['admin', 'operator', 'user']
+  roles = ['admin', 'moderator', 'user']
   error = ''
   paramId = ''
   userIsExist = false
+  isDisabled = false
+  loading = true
 
   validateForm!: FormGroup
 
@@ -49,36 +50,64 @@ export class UsersEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.paramId = this.route.snapshot.paramMap.get('id')!
-    if (this.paramId && this.paramId !== '' && this.checkUserExist(+this.paramId)) {
-      this.userIsExist = true
-    }
-
+    
+    this.checkUserExist(this.paramId)
+    // if (this.paramId && this.paramId !== '' && this.checkUserExist(+this.paramId)) {
+    //   this.userIsExist = true
+    // }
+    
     this.validateForm = this.fb.group({
-      login: [null, [Validators.required]],
-      password: [null, [Validators.required]],
+      login: [this.user.login, [Validators.required]],
+      password: [this.user.password, [Validators.required]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
-      firstName: [null, [Validators.required]],
-      lastName: [null, [Validators.required]],
-      patronymic: [null, [Validators.required]],
+      firstName: [this.user.firstName, [Validators.required]],
+      lastName: [this.user.lastName, [Validators.required]],
+      patronymic: [this.user.patronymic, [Validators.required]],
+      role: [this.user.role, [Validators.required]],
+      isActive: [this.user.isActive, [Validators.required]],
     });
 
   }
 
-  checkUserExist(id: number): boolean {
-
-
-    /// this.userService.getUser(user)
-
-
-    this.users = JSON.parse(localStorage.getItem('Users') as string)
-
-    let _user = this.users.find(user => user.id === id)
-
-    if (_user) {
-      this.user = _user
-      return true
+  checkUserExist(id: string) {
+    if (!id || id.length === 0) {
+      this.userIsExist = false
+      this.loading = false
+      return
     }
-    return false
+
+    this.loading = true
+    this.isDisabled = true
+    this.userService.findUser(+id)
+      .pipe(first())
+      .subscribe({
+        next: data => {
+          this.userIsExist = true
+          this.user = data
+          console.log(this.user);
+
+          this.validateForm = this.fb.group({
+            login: [this.user.login, [Validators.required]],
+            password: [this.user.password, [Validators.required]],
+            checkPassword: [null, [Validators.required, this.confirmationValidator]],
+            firstName: [this.user.firstName, [Validators.required]],
+            lastName: [this.user.lastName, [Validators.required]],
+            patronymic: [this.user.patronymic, [Validators.required]],
+            role: [this.user.role, [Validators.required]],
+            isActive: [this.user.isActive, [Validators.required]],
+          });
+          this.isDisabled = false
+          this.loading = false
+        },
+        error: error => {
+          this.error = error.error.message;
+          this.userIsExist = false
+          this.isDisabled = false
+          this.loading = false
+        }
+      });
+    
+    
   }
 
   updateConfirmValidator(): void {
@@ -125,12 +154,12 @@ export class UsersEditComponent implements OnInit {
       firstName: this.f['firstName'].value,
       lastName: this.f['lastName'].value,
       patronymic: this.f['patronymic'].value,
-      role: this.user.role,
-      isActive: this.user.isActive
+      role: this.f['role'].value,
+      isActive: this.f['isActive'].value
     }
 
     // this.loading = true;
-    // this.isDisabled = true
+    this.isDisabled = true
     this.userService.createUser(user)
       .pipe(first())
       .subscribe({
@@ -138,23 +167,11 @@ export class UsersEditComponent implements OnInit {
           this.router.navigate(['/users']);
         },
         error: error => {
-          this.error = error;
-          // this.isDisabled = false
+          this.error = error.error.message;
+          this.isDisabled = false
           // this.loading = false;
         }
       });
-
-    // if (this.users.length === 0) {
-    //   this.users = JSON.parse(localStorage.getItem('Users') as string)
-    // }
-    // if (this.users?.length != 0 && this.users[this.users.length - 1].hasOwnProperty('id'))
-    //   this.user.id = this.users[this.users.length - 1].id + 1
-    // else
-    //   this.user.id = 0
-
-    // this.users.push(this.user)
-    // localStorage.setItem('Users', JSON.stringify(this.users))
-    // this.router.navigate(['/users'])
   }
 
   changeUser() {
@@ -174,7 +191,7 @@ export class UsersEditComponent implements OnInit {
     }
 
     // this.loading = true;
-    // this.isDisabled = true
+    this.isDisabled = true
     this.userService.updateUser(this.paramId, user)
       .pipe(first())
       .subscribe({
@@ -182,19 +199,12 @@ export class UsersEditComponent implements OnInit {
           this.router.navigate(['/users']);
         },
         error: error => {
-          this.error = error;
-          // this.isDisabled = false
+          this.error = error.error.message;
+          this.isDisabled = false
           // this.loading = false;
         }
       });
 
-
-    // if (this.invalidData()) {
-    //   this.users.map(n => n.id === +this.id ? { ...this.user } : n) // modified
-
-    //   localStorage.setItem('Users', JSON.stringify(this.users))
-    //   this.router.navigate(['/users'])
-    // }
   }
 
 }

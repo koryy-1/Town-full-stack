@@ -13,7 +13,7 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  roles = ['admin', 'operator', 'user']
+  roles = ['admin', 'moderator', 'user']
   returnUrl = '/users';
   error = '';
   isDisabled = false
