@@ -1,6 +1,6 @@
 
 
-# Slavgorod2
+# Slavgorod full stack
 
 This project was generated using [Nx](https://nx.dev).
 
