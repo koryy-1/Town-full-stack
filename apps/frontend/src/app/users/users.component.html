@@ -63,28 +63,31 @@
                         <a nz-button nzType="link" [routerLink]="['/users/edit', user.id]">edit</a> |
                         <a 
                         nz-button nzType="link" 
-                        (click)="showModal()" 
+                        (click)="showModal(user.id, user.firstName, user.lastName)" 
                         [disabled]="disableDeleteBtn" 
                         nzDanger
                         >
                         delete</a>
-                        <nz-modal
-                        [(nzVisible)]="isVisible"
-                        nzTitle="Подтверждение удаления"
-                        (nzOnCancel)="handleCancel()"
-                        (nzOnOk)="handleDelete(user.id)"
-                        nzOkDanger="true"
-                        [nzOkLoading]="isOkLoading"
-                        >
-                        <div *nzModalContent>
-                            <p>Вы уверены, что хотите удалить пользователя {{user.firstName}} {{user.lastName}}?</p>
-                            <span *ngIf="errorDelete" class="warning">{{errorDelete}}</span>
-                        </div>
-                        </nz-modal>
+
+                        
                     </td>
                 </tr>
             </tbody>
         </table>
+        <!-- <nz-modal
+            [(nzVisible)]="isVisible"
+            nzTitle="Подтверждение удаления"
+            (nzOnCancel)="handleCancel()"
+            (nzOnOk)="handleDelete()"
+            nzOkDanger="true"
+            [nzOkLoading]="isOkLoading"
+            >
+            <div *nzModalContent>
+                <p>Вы уверены, что хотите удалить пользователя {{user.firstName}} {{user.lastName}}?</p>
+                <span *ngIf="errorDelete" class="warning">{{errorDelete}}</span>
+            </div>
+        </nz-modal> -->
+
         <h4 *ngIf="loading" class="no-data">Загрузка</h4>
         <h4 *ngIf="(!users || users?.length === 0) && !loading && !errorData" class="no-data">нет данных</h4>
         <h4 *ngIf="errorData" class="no-data warning">{{errorData}}</h4>

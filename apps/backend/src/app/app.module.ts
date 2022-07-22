@@ -18,9 +18,10 @@ import { User } from './entities/user.entity';
       // port: 3306,
       // username: 'root',
       // password: 'root',
-      database: 'db',
-      entities: [],
+      database: 'usersDB',
+      entities: [User],
       synchronize: true,
+      autoLoadEntities: true,
     }),
     TypeOrmModule.forFeature([User])
   ],
@@ -30,10 +31,10 @@ import { User } from './entities/user.entity';
   ],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    }
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // }
   ],
 })
 export class AppModule {

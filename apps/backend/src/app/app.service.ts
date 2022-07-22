@@ -6,7 +6,7 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class AppService {
-  // private users: User[]
+  private users: User[]
   private readonly logger = new Logger(AppService.name);
 
   constructor(
@@ -15,19 +15,19 @@ export class AppService {
   ) {}
 
   
-  public getUsers(): Promise<User[]> {
-    const result = this.usersRepository.find();
+  public async getUsers(): Promise<User[]> {
+    const result = await this.usersRepository.find();
     if (!result) {
       throw new NotFoundException('Users not found.');
     }
     return result
   }
 
-  public findOne(id: number): Promise<User> {
+  public async findOne(id: number): Promise<User> {
     // const user: User = this.users.find(
     //   (item) => item.id === id,
     // );
-    const result = this.usersRepository.findOneByOrFail({ id });
+    const result = await this.usersRepository.findOneBy({ id });
     if (!result) {
       throw new NotFoundException('User not exists.');
     }
@@ -35,8 +35,10 @@ export class AppService {
     return result;
   }
   
-  public create(user: User): Promise<InsertResult> {
-    const loginExists = this.usersRepository.findOneByOrFail({ login: user.login });
+  public async create(user: User): Promise<InsertResult> {
+    this.logger.log(`create new user`);
+    const loginExists = await this.usersRepository.findOneBy({ login: user.login });
+    this.logger.log(`loginExists?.login: ${loginExists?.login}`);
     // const loginExists: boolean = this.users.some(
     //   (item) => item.login === user.login,
     // );
@@ -44,7 +46,16 @@ export class AppService {
       throw new UnprocessableEntityException('Login already exists.');
     }
 
-    return this.usersRepository.insert(user)
+    return await this.usersRepository.insert({
+      login: user.login,
+      password: user.password,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      patronymic: user.patronymic,
+      role: user.role,
+      isActive: user.isActive,
+      // token?: string;
+    })
 
     // find the next id for a new user
     // const maxId: number = Math.max(...this.users.map((user) => user.id), 0);
@@ -59,10 +70,10 @@ export class AppService {
 
   }
 
-  public update(id: number, user: User): Promise<UpdateResult> {
-    this.logger.log(`Updating post with id: ${id}`);
+  public async update(entityId: number, user: User): Promise<UpdateResult> {
+    this.logger.log(`Updating user with id: ${entityId}`);
 
-    const userExists = this.usersRepository.findOneByOrFail({ id: user.id });
+    const userExists = await this.usersRepository.findOneBy({ id: entityId });
 
     if (!userExists) {
       throw new NotFoundException('User not found.');
@@ -76,12 +87,14 @@ export class AppService {
     // }
 
     // if the login is already in use by another user
-    const loginExists = this.usersRepository.findOneByOrFail({ login: user.login }); // id: !user.id
-    if (loginExists) {
+    const loginExists = await this.usersRepository.findOneBy({ login: user.login });
+    if (loginExists && loginExists.login === user.login && loginExists.id !== entityId) {
       throw new UnprocessableEntityException('Login already exists.');
     }
 
-    return this.usersRepository.update(id, user)
+    user.id = entityId
+
+    return await this.usersRepository.update({id: entityId}, user)
 
     // const loginExists: boolean = this.users.some(
     //   (item) => item.login === user.login && item.id !== id,
@@ -101,10 +114,13 @@ export class AppService {
   }
   
   public async delete(id: number): Promise<void> {
-    this.logger.log(`delete post with id: ${id}`);
+    this.logger.log(`delete user with id: ${id}`);
     const result = await this.usersRepository.delete(id);
-    this.logger.log(result);
-    
+    this.logger.log(`result: ${result.affected}`);
+
+    if (result.affected === 0) {
+      throw new UnprocessableEntityException('Error to delete.');
+    }
     // const index: number = this.users.findIndex(user => user.id === id);
 
     // // -1 is returned when no findIndex() match is found

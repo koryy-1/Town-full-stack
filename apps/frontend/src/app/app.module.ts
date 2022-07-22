@@ -27,7 +27,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { fakeBackendProvider } from './fake-backend/fake-backend.interceptor';
+// import { fakeBackendProvider } from './fake-backend/fake-backend.interceptor';
 import { JwtInterceptor } from './jwt.interceptor';
 
 
@@ -67,7 +67,7 @@ registerLocaleData(en);
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     
     // provider used to create fake backend
-    fakeBackendProvider
+    // fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })

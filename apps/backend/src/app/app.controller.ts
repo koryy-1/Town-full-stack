@@ -27,7 +27,7 @@ export class AppController {
   }
 
   @Put('edit/:id')
-  public updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: User): User {
+  public updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: User) {
     return this.appService.update(id, user);
   }
 

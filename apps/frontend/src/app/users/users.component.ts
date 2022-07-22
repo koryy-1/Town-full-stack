@@ -14,7 +14,7 @@ import { first } from 'rxjs/operators';
 })
 export class UsersComponent implements OnInit {
   confirmModal?: NzModalRef;
-  isVisible = false;
+  // isVisible = false;
   isOkLoading = false;
   
   users: User[] = []
@@ -31,8 +31,6 @@ export class UsersComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    // this.deleteDB()
-    // this.ensureCreatedDB()
     this.getUsers()
   }
 
@@ -66,6 +64,7 @@ export class UsersComponent implements OnInit {
     if (!this.isLoggedIn()) {
       return
     }
+    
     this.isOkLoading = true;
     this.disableDeleteBtn = true
     this.userService.deleteUser(id)
@@ -77,45 +76,42 @@ export class UsersComponent implements OnInit {
             this.users.splice(index, 1);
           }
           this.disableDeleteBtn = false
-          this.isVisible = false;
+          // this.isVisible = false;
           this.isOkLoading = false;
+          this.confirmModal?.destroy()
         },
         error: error => {
           this.errorDelete = error.error.message;
+          console.log(this.errorDelete);
+          
+          this.isOkLoading = false
           this.disableDeleteBtn = false
-          this.isOkLoading = false;
         }
       });
     
   }
 
-  handleCancel(): void {
-    this.isVisible = false;
-    this.errorDelete = ' '
-  }
+  // handleCancel(): void {
+  //   this.isVisible = false;
+  //   this.errorDelete = ' '
+  // }
 
 
-  showModal() {
+  showModal(id: number, firstName: string | null, lastName: string | null) {
     if (!this.isLoggedIn()) {
       return
     }
-    this.isVisible = true;
-    // this.confirmModal = this.modal.confirm({
-    //   nzTitle: `Вы уверены, что хотите удалить пользователя ${firstName} ${lastName}?`,
-    //   nzOkType: 'primary',
-    //   nzOkDanger: true,
-    //   nzOnOk: () => this.deleteUser(id),
-    // });
+    // this.isVisible = true;
+    this.confirmModal = this.modal.confirm({
+      // nzVisible: true,
+      nzTitle: `Вы уверены, что хотите удалить пользователя ${firstName} ${lastName}?`,
+      nzContent: this.errorDelete,
+      // nzOnCancel: () => this.handleCancel(),
+      nzOnOk: () => new Promise(() => this.handleDelete(id)),
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOkLoading: this.isOkLoading
+    });
 
-  }
-
-  deleteDB() {
-    localStorage.setItem('Users', '[]')
-  }
-
-  ensureCreatedDB() {
-    if (!this.users) {
-      localStorage.setItem('Users', `[]`)
-    }
   }
 }
