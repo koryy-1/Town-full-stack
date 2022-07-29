@@ -42,7 +42,8 @@ export class UsersComponent implements OnInit {
         this.loading = false
       },
       error: error => {
-        this.errorData = error.error.message;
+        // this.errorData = error.error?.message || error.statusText;
+        this.errorData = error
         this.loading = false
       }
     });
@@ -81,8 +82,9 @@ export class UsersComponent implements OnInit {
           this.confirmModal?.destroy()
         },
         error: error => {
-          this.errorDelete = error.error.message;
-          console.log(this.errorDelete);
+          // this.errorDelete = error.error?.message || error.statusText;
+          this.errorDelete = error
+          // console.log(this.errorDelete);
           
           this.isOkLoading = false
           this.disableDeleteBtn = false

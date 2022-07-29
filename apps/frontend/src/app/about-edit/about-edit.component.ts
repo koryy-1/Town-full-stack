@@ -31,21 +31,21 @@ export class AboutEditComponent implements OnInit {
   ngOnInit(): void {
     this.aboutInfoFromLS = JSON.parse(localStorage.getItem('aboutInfo') as string)
 
-    this.aboutInfoFromLS.shortInfo = this.aboutInfoFromLS?.shortInfo || 'Меня зовут Илья, 21 y.o., родился в Славгороде, собственно, сайт этому городу и посвящен.',
+    this.aboutInfo.shortInfo = this.aboutInfoFromLS?.shortInfo || 'Меня зовут Илья, 21 y.o., родился в Славгороде, собственно, сайт этому городу и посвящен.',
 
-    this.aboutInfoFromLS.currentPlaceOfStudy = this.aboutInfoFromLS.currentPlaceOfStudy || 'Учусь в СибГУТИ, на факультете АЭС по специальности информационная безопасность телекоммуникационных систем.',
+    this.aboutInfo.currentPlaceOfStudy = this.aboutInfoFromLS?.currentPlaceOfStudy || 'Учусь в СибГУТИ, на факультете АЭС по специальности информационная безопасность телекоммуникационных систем.',
 
-    this.aboutInfoFromLS.pastPlaceOfStudy = this.aboutInfoFromLS.pastPlaceOfStudy || 'Окончил ВСШ №35.',
+    this.aboutInfo.pastPlaceOfStudy = this.aboutInfoFromLS?.pastPlaceOfStudy || 'Окончил ВСШ №35.',
 
-    this.aboutInfoFromLS.currentPlaceOfWork = this.aboutInfoFromLS.currentPlaceOfWork || 'Сейчас стажируюсь в AT Consulting Восток',
+    this.aboutInfo.currentPlaceOfWork = this.aboutInfoFromLS?.currentPlaceOfWork || 'Сейчас стажируюсь в AT Consulting Восток',
 
-    this.aboutInfoFromLS.mainActivity = this.aboutInfoFromLS.mainActivity || 'написание программ и автоматизация различного рода рутинных задач.',
+    this.aboutInfo.mainActivity = this.aboutInfoFromLS?.mainActivity || 'написание программ и автоматизация различного рода рутинных задач.',
 
-    this.aboutInfoFromLS.favoriteThings = this.aboutInfoFromLS.favoriteThings || `мне нравится собирать компы.
+    this.aboutInfo.favoriteThings = this.aboutInfoFromLS?.favoriteThings || `мне нравится собирать компы.
     а еще мне нравится пицца, люблю пить энергетики, офк пью их редко.
-    люблю когда бабки появляются из воздуха с помощью моих алгоритмов.`
+    люблю когда бабки из воздуха.`
     
-    this.aboutInfo = this.aboutInfoFromLS
+    // this.aboutInfo = this.aboutInfoFromLS
   }
 
   saveChanges() {

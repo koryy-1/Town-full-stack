@@ -1,42 +1,27 @@
 import { Module } from '@nestjs/common';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthController } from './auth.controller';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './roles.guard';
+// import { RolesGuard } from '../app/roles/roles.guard';
 import { DataSource } from 'typeorm';
-import { User } from './entities/user.entity';
+import { User } from './users/user.entity';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      // host: 'localhost',
-      // port: 3306,
-      // username: 'root',
-      // password: 'root',
       database: 'usersDB',
       entities: [User],
       synchronize: true,
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([User])
+    UsersModule,
+    AuthModule,
   ],
-  controllers: [
-    AppController,
-    AuthController
-  ],
-  providers: [
-    AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard,
-    // }
-  ],
+  controllers: [],
+  providers: [],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}

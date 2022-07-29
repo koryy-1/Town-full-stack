@@ -82,9 +82,15 @@ export class UsersEditComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: data => {
+          if (!data) {
+            this.userIsExist = false
+            this.loading = false
+            this.isDisabled = false
+            return
+          }
           this.userIsExist = true
           this.user = data
-          console.log(this.user);
+          // console.log(this.user);
 
           this.validateForm = this.fb.group({
             login: [this.user.login, [Validators.required]],
@@ -100,7 +106,10 @@ export class UsersEditComponent implements OnInit {
           this.loading = false
         },
         error: error => {
-          this.error = error.error.message;
+          // this.error = error.error?.message || error.statusText;
+          this.error = error
+          // console.log(error);
+          
           this.userIsExist = false
           this.isDisabled = false
           this.loading = false
@@ -167,7 +176,10 @@ export class UsersEditComponent implements OnInit {
           this.router.navigate(['/users']);
         },
         error: error => {
-          this.error = error.error.message;
+          // this.error = error.error?.message || error.statusText;
+          this.error = error
+          // console.log(error);
+          
           this.isDisabled = false
           // this.loading = false;
         }
@@ -199,7 +211,8 @@ export class UsersEditComponent implements OnInit {
           this.router.navigate(['/users']);
         },
         error: error => {
-          this.error = error.error.message;
+          // this.error = error.error?.message || error.statusText;
+          this.error = error
           this.isDisabled = false
           // this.loading = false;
         }

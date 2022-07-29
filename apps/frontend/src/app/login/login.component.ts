@@ -53,10 +53,12 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: data => {
+          // console.log(data);
           this.router.navigate([this.returnUrl]);
         },
         error: error => {
-          this.error = error;
+          // this.error = error.error?.message || error.statusText;
+          this.error = error
           // this.loading = false;
           this.isDisabled = false
         }
